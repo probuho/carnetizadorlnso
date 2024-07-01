@@ -1,0 +1,334 @@
+Anotaciones
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+CREATE DATABASE carnetizador;
+CREATE USER lnso WITH PASSWORD 'soporte';
+GRANT ALL PRIVILEGES ON DATABASE carnetizador TO lnso;
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+DB_CONNECTION=pgsql
+DB_HOST=127.0.0.1
+DB_PORT=5432
+DB_DATABASE=carnetizador
+DB_USERNAME=lnso
+DB_PASSWORD=soporte
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+Estructura de Directorios: Primero, asegúrate de entender la estructura de directorios de Laravel cómo se relaciona con los 
+archivos que tienes. Por ejemplo, los archivos HTML como about.html, contact.html, gallery.html, y sitio.html podrían 
+convertirse en vistas de Blade en resources/views, mientras que los archivos CSS y JavaScript pueden ubicarse en public/css 
+y public/js respectivamente.
+
+Convertir HTML a Blade: Convierte tus archivos HTML (about.html, contact.html, gallery.html, sitio.html) a plantillas Blade 
+de Laravel (about.blade.php, contact.blade.php, gallery.blade.php, sitio.blade.php). Esto te permitirá utilizar 
+características de Laravel como la herencia de plantillas y la inclusión de subvistas.
+
+{{-- Ejemplo de conversión a Blade para about.blade.php --}}
+@extends('layouts.app')
+
+@section('content')
+<!-- Aquí va el contenido de about.html, adaptado a Blade -->
+@endsection
+
+Mover Archivos Estáticos: Mueve los archivos CSS, JavaScript, imágenes y cualquier otro recurso estático a la carpeta public de Laravel. 
+Puedes mantener la estructura de subdirectorios que tenías, por ejemplo, public/css, public/js, public/img, etc.
+
+Actualizar Rutas de Recursos: Actualiza las rutas de los recursos estáticos en tus vistas Blade para que utilicen la función asset() de Laravel. Esto asegura que las rutas sean correctas independientemente de dónde se despliegue tu aplicación.
+
+<link href="{{ asset('css/style.css') }}" rel="stylesheet">
+<script src="{{ asset('js/main.js') }}"></script>
+Rutas de Laravel: Define rutas en routes/web.php para cada una de tus páginas. Estas rutas devolverán las vistas correspondientes.
+
+Route::get('/about', function () {
+    return view('about');
+});
+
+Route::get('/contact', function () {
+    return view('contact');
+});
+
+// Y así sucesivamente para las demás páginas
+Controladores (Opcional): Si tu aplicación requiere lógica de negocio antes de mostrar una vista, considera crear controladores 
+en lugar de definir la lógica directamente en las rutas.
+
+php artisan make:controller AboutController
+Y luego en tu controlador:
+
+public function show()
+{
+    // Lógica aquí
+    return view('about');
+}
+Pruebas: Después de realizar estos cambios, prueba tu aplicación localmente para asegurarte de que todo funcione correctamente. Asegúrate de que todas las rutas carguen las vistas esperadas y que todos los recursos estáticos se carguen sin problemas.
+
+Migraciones y Base de Datos (Si es necesario): Si tu aplicación original utiliza una base de datos, deberás crear migraciones en Laravel para replicar tu esquema de base de datos y modificar tus vistas/controladores para utilizar Eloquent ORM o el Query Builder de Laravel para las operaciones de base de datos.
+
+Al seguir estos pasos, podrás integrar los archivos de tu repositorio en una aplicación de Laravel, aprovechando las características y funcionalidades que Laravel ofrece.
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+Puedes por favor generar el codigo de ejemplo para about.html a blade
+
+Para convertir el archivo about.html a un archivo Blade de Laravel, necesitarás hacer algunos cambios para adaptarlo a la sintaxis de Blade y aprovechar sus características, como la herencia de plantillas y la inclusión de subvistas. A continuación, te muestro cómo podría ser el código de about.blade.php basado en el archivo about.html proporcionado:
+
+{{-- layouts/app.blade.php --}}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    @include('partials.head')
+</head>
+
+<body>
+    {{-- Navbar --}}
+    @include('partials.navbar')
+
+    {{-- Header --}}
+    <div class="container-fluid bg-primary mb-5">
+        <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 400px">
+            <h3 class="display-3 font-weight-bold text-white">Acerca de</h3>
+        </div>
+    </div>
+
+    {{-- About Content --}}
+    <div class="container-fluid py-5">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-5">
+                    <img class="img-fluid rounded mb-5 mb-lg-0" src="{{ asset('img/about-1.jpg') }}" alt="">
+                </div>
+                <div class="col-lg-7">
+                    <p class="section-title pr-5"><span class="pr-2">Nuestros momentos</span></p>
+                    <h1 class="mb-4">El mejor Colegio para sus hijos</h1>
+                    <p>Compartimos contigo nuestro mejores momentos, te mostramos nuestro logros.</p>
+                    <div class="row pt-2 pb-4">
+                        <div class="col-6 col-md-4">
+                            <img class="img-fluid rounded" src="{{ asset('img/about-2.jpg') }}" alt="">
+                        </div>
+                        <div class="col-6 col-md-8">
+                            <ul class="list-inline m-0">
+                                <li class="py-2 border-top border-bottom"><i class="fa fa-check text-primary mr-3"></i>Misa de gracias.</li>
+                                <li class="py-2 border-bottom"><i class="fa fa-check text-primary mr-3"></i>Graduaciones.</li>
+                                <li class="py-2 border-bottom"><i class="fa fa-check text-primary mr-3"></i>Promociones.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- Team Section --}}
+    @include('partials.team')
+
+    {{-- Footer --}}
+    @include('partials.footer')
+
+    {{-- Back to Top --}}
+    <a href="#" class="btn btn-primary p-3 back-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+    {{-- JavaScript Libraries --}}
+    @include('partials.scripts')
+</body>
+
+</html>
+En este ejemplo, he asumido que tienes un directorio partials dentro de tu carpeta de vistas (resources/views) donde has separado partes de tu HTML como la cabecera (head), la barra de navegación (navbar), el pie de página (footer), y los scripts (scripts) en archivos Blade separados para reutilizarlos en diferentes vistas. Esto es solo un ejemplo de cómo podrías organizar tu código; puedes ajustarlo según tus necesidades.
+
+Recuerda que para usar asset(), deberás tener tus imágenes en la carpeta public de tu proyecto Laravel, y la ruta debe reflejar la ubicación real de tus archivos dentro de esa carpeta.
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+Para convertir el archivo sitio.html a un archivo Blade de Laravel, primero debes tener en cuenta que Blade es un motor de 
+plantillas de PHP utilizado por Laravel, que permite la inserción de PHP en el HTML de manera sencilla y directa. 
+A continuación, te muestro cómo sería el código de ejemplo para convertir sitio.html a un archivo Blade, 
+que podríamos llamar sitio.blade.php.
+
+{{-- sitio.blade.php --}}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    @include('partials.head')
+</head>
+
+<body>
+    {{-- Navbar --}}
+    @include('partials.navbar')
+
+    {{-- Header --}}
+    <div class="container-fluid bg-primary px-0 px-md-5 mb-5">
+        <div class="row align-items-center px-3">
+            <div class="col-lg-6 text-center text-lg-left">
+                <h4 class="text-white mb-4 mt-5 mt-lg-0">Nuestra misión es educarte</h4>
+                <h1 class="display-4 font-weight-bold text-white">Nuevo enfoque para la educación con Dios la Virgen y amor</h1>
+                <a href="https://nicelocal.com.ve/caracas/education/colegio_nuestra_senora_de_lourdes/" class="btn btn-secondary mt-1 py-3 px-5">Leer más</a>
+            </div>
+            <div class="col-lg-6 text-center text-lg-right">
+                <img class="img-fluid mt-5" src="{{ asset('img/header.png') }}" alt="">
+            </div>
+        </div>
+    </div>
+
+    {{-- Facilities --}}
+    @include('partials.facilities')
+
+    {{-- About --}}
+    @include('partials.about')
+
+    {{-- Classes --}}
+    @include('partials.classes')
+
+    {{-- Team --}}
+    @include('partials.team')
+
+    {{-- Footer --}}
+    @include('partials.footer')
+
+    {{-- Back to Top --}}
+    <a href="#" class="btn btn-primary p-3 back-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+    {{-- JavaScript Libraries --}}
+    @include('partials.scripts')
+</body>
+
+</html>
+
+En este ejemplo, he dividido el archivo HTML original en varias secciones (partials), como head, navbar, facilities, about, 
+classes, team, footer, y scripts, que serían archivos Blade separados dentro de una carpeta llamada partials. Esto es para 
+promover la reutilización del código y mantener el código base limpio y organizado.
+
+Por ejemplo, el archivo partials/navbar.blade.php podría verse así:
+
+{{-- partials/navbar.blade.php --}}
+<div class="container-fluid bg-light position-relative shadow">
+    <nav class="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-0 px-lg-5">
+        <a href="{{ url('/') }}" class="navbar-brand font-weight-bold text-secondary" style="font-size: 25px;">
+            <span class="text-primary">Colegio Nuestra Señora de Lourdes</span>
+        </a>
+        <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+            <div class="navbar-nav font-weight-bold mx-auto py-0">
+                <a href="{{ url('/') }}" class="nav-item nav-link active">Colegio</a>
+                <a href="{{ url('/about') }}" class="nav-item nav-link">Acerca de</a>
+                <a href="{{ url('/gallery') }}" class="nav-item nav-link">Galería</a>
+                <a href="{{ url('/contact') }}" class="nav-item nav-link">Contáctanos</a>
+            </div>
+        </div>
+    </nav>
+</div>
+Este enfoque modular facilita el mantenimiento del código y permite reutilizar componentes en diferentes vistas de tu aplicación Laravel.
+
+----------------------------------------------------------------------------------------------------------------------------------
+
+Para convertir gallery.html a un archivo Blade de Laravel (gallery.blade.php), necesitarás realizar algunos cambios para adaptar 
+el HTML estándar a la sintaxis de Blade. A continuación, te muestro cómo quedaría el archivo convertido, manteniendo la estructura 
+básica y adaptando las secciones dinámicas para que puedan ser gestionadas por Laravel.
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Colegio - Nuestra Señora de Lourdes</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Free HTML Templates" name="keywords">
+    <meta content="Free HTML Templates" name="description">
+
+    <!-- Favicon -->
+    <link href="{{ asset('img/favicon.ico') }}" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Handlee&family=Nunito&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Flaticon Font -->
+    <link href="{{ asset('lib/flaticon/font/flaticon.css') }}" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="{{ asset('lib/owlcarousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('lib/lightbox/css/lightbox.min.css') }}" rel="stylesheet">
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+</head>
+
+<body>
+    @include('partials.navbar')
+
+    <!-- Header Start -->
+    <div class="container-fluid bg-primary mb-5">
+        <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 400px">
+            <h3 class="display-3 font-weight-bold text-white">Galería</h3>
+        </div>
+    </div>
+    <!-- Header End -->
+
+    <!-- Gallery Start -->
+    <div class="container-fluid pt-5 pb-3">
+        <div class="container">
+            <div class="text-center pb-2">
+                <p class="section-title px-5"><span class="px-2">Nuestra Galería</span></p>
+                <h1 class="mb-4">Fotos</h1>
+            </div>
+            
+            <div class="row portfolio-container">
+                @foreach($images as $image)
+                <div class="col-lg-4 col-md-6 mb-4 portfolio-item">
+                    <div class="position-relative overflow-hidden mb-2">
+                        <img class="img-fluid w-100" src="{{ asset('img/portfolio/'.$image->filename) }}" alt="">
+                        <div class="portfolio-btn bg-primary d-flex align-items-center justify-content-center">
+                            <a href="{{ asset('img/portfolio/'.$image->filename) }}" data-lightbox="portfolio">
+                                <i class="fa fa-plus text-white" style="font-size: 60px;"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+        </div>
+    </div>
+    <!-- Gallery End -->
+
+    @include('partials.footer')
+
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-primary p-3 back-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ asset('lib/easing/easing.min.js') }}"></script>
+    <script src="{{ asset('lib/owlcarousel/owl.carousel.min.js') }}"></script>
+    <script src="{{ asset('lib/isotope/isotope.pkgd.min.js') }}"></script>
+    <script src="{{ asset('lib/lightbox/js/lightbox.min.js') }}"></script>
+
+    <!-- Template Javascript -->
+    <script src="{{ asset('js/main.js') }}"></script>
+</body>
+
+</html>
+
+En este ejemplo, se han realizado los siguientes cambios para adaptar gallery.html a gallery.blade.php:
+
+# Assets: Se utilizó la función asset() de Blade para incluir los enlaces a los archivos CSS, JS, imágenes, etc. Esto 
+asegura que los enlaces sean correctos independientemente de la ubicación del archivo.
+
+# Inclusión de Partes: Se asumió la existencia de archivos parciales para la barra de navegación y el pie de página 
+(partials.navbar y partials.footer), que se incluyen con @include('partials.navbar') y @include('partials.footer').
+
+# Sección Dinámica: Se simuló una sección dinámica para las imágenes de la galería, utilizando @foreach para iterar 
+sobre un array $images que se supone es pasado al archivo Blade desde un controlador de Laravel.
+
+Este es un ejemplo básico de cómo convertir un archivo HTML estático a un archivo Blade de Laravel. Dependiendo de las 
+necesidades específicas de tu proyecto, es posible que necesites realizar ajustes adicionales.
+
+----------------------------------------------------------------------------------------------------------------------------------
+
