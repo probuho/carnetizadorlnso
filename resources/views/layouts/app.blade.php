@@ -2,10 +2,8 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="utf-8">
-    <title>@yield('title', 'Liceo Nocturno SUROESTE')</title>
+    <title>@yield('title', 'Liceo Nocturno SurOeste')</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="Free HTML Templates" name="keywords">
-    <meta content="Free HTML Templates" name="description">
     <link href="{{ asset('img/favicon.ico') }}" rel="icon">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Handlee&family=Nunito&display=swap" rel="stylesheet">
@@ -14,6 +12,10 @@
     <link href="{{ asset('lib/owlcarousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
     <link href="{{ asset('lib/lightbox/css/lightbox.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ mix('css/app.css') }}">
+    <link rel="stylesheet" href="{{ mix('css/style.css') }}">
+    @vite(['resources/css/app.css', 'resources\sass\app.scss',  'resources/js/app.js'])
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/countup.js/2.0.7/countUp.min.js"></script>
     <!-- Aquí puedes incluir enlaces a CSS globales adicionales si es necesario -->
 </head>
 <body>
@@ -38,6 +40,7 @@
     <script src="{{ asset('lib/isotope/isotope.pkgd.min.js') }}"></script>
     <script src="{{ asset('lib/lightbox/js/lightbox.min.js') }}"></script>
     <script src="{{ asset('js/main.js') }}"></script>
+    <script src="{{ asset('js/app.js') }}"></script>
     <!-- Sección para scripts específicos de cada página -->
     @yield('scripts')
 </body>

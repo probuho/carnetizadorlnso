@@ -8,8 +8,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\StudentCardMail;
 use Barryvdh\Snappy\Facades\SnappyPdf as PDF;
-use Intervention\Image\ImageManager;
-use Intervention\Image\Drivers\Gd\Driver;
+
 
 class StudentController extends Controller
 {
@@ -27,7 +26,7 @@ class StudentController extends Controller
             'email' => 'nullable|email',
             'grade' => 'required|string|max:255',
             'section' => 'required|string|max:255',
-            'photo' => 'nullable|image|max:2048',
+            'photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'rol' => 'required|string|max:255',
         ], [
             'first_name.required' => 'El campo nombre es obligatorio.',
@@ -41,12 +40,6 @@ class StudentController extends Controller
             'rol.required' => 'El campo rol es obligatorio.',
         ]);
 
-        if ($request->rol == 'Estudiante') {
-            $request->validate([
-                'grade' => 'required|string|max:255',
-                'section' => 'required|string|max:255',
-            ]);
-        }
         // Subir la foto si se proporciona
         if ($request->hasFile('photo')) {
             $data['photo_path'] = $request->file('photo')->store('photos', 'public');
@@ -58,63 +51,6 @@ class StudentController extends Controller
         // Redirigir a la vista previa del estudiante
         return redirect()->route('students.preview', ['id' => $student->id])->with('success', '¡Estudiante creado exitosamente!');
     }
-
-    // public function store(Request $request)
-    // {
-    //     $data = $request->validate([
-    //         'first_name' => 'required|string|max:255',
-    //         'last_name' => 'required|string|max:255',
-    //         'email' => 'nullable|email',
-    //         'grade' => 'required|string|max:255',
-    //         'section' => 'required|string|max:255',
-    //         'photo' => 'nullable|image|max:2048',
-    //         'rol' => 'required|string|max:255',
-    //     ]);
-
-    //     if ($request->hasFile('photo')) {
-    //         $data['photo_path'] = $request->file('photo')->store('photos', 'public');
-    //     }
-
-    //     $student = Student::create($data);
-
-    //     return redirect()->route('students.preview', ['id' => $student->id]);
-    // }
-
-    // public function store(Request $request)
-    // {
-    //     $request->validate([
-    //         'first_name' => 'required|string|max:255',
-    //         'last_name' => 'required|string|max:255',
-    //         'email' => 'nullable|email',
-    //         'grade' => 'required|string|max:255',
-    //         'section' => 'required|string|max:255',
-    //         'photo' => 'nullable|image|max:2048',
-    //     ], [
-    //         'first_name.required' => 'El campo nombre es obligatorio.',
-    //         'last_name.required' => 'El campo apellido es obligatorio.',
-    //         'email.email' => 'El campo correo electrónico debe ser una dirección de correo válida.',
-    //         'grade.required' => 'El campo año/grado es obligatorio.',
-    //         'section.required' => 'El campo sección es obligatorio.',
-    //         'photo.image' => 'El archivo debe ser una imagen.',
-    //         'photo.max' => 'La imagen no debe superar los 2MB.',
-    //     ]);
-
-    //     // Subir la foto si se proporciona
-    //     $photoPath = $request->file('photo') ? $request->file('photo')->store('photos', 'public') : null;
-
-    //     // Crear el estudiante en la base de datos
-    //     $student = Student::create([
-    //         'first_name' => $request->first_name,
-    //         'last_name' => $request->last_name,
-    //         'email' => $request->email,
-    //         'grade' => $request->grade,
-    //         'section' => $request->section,
-    //         'photo_path' => $photoPath,
-    //     ]);
-
-    //     // Redirigir de vuelta a la página anterior con el mensaje de éxito
-    //     return redirect()->back()->with('success', '¡Estudiante creado exitosamente!');
-    // }
 
     public function preview($id)
     {
@@ -162,7 +98,6 @@ class StudentController extends Controller
         return back()->with('success', 'Carnet enviado por correo electrónico.');
     }
 
-
     public function show($id)
     {
         $student = Student::findOrFail($id);
@@ -176,53 +111,3 @@ class StudentController extends Controller
         return $pdf->download('student.pdf');
     }
 }
-
-
-// app/Http/Controllers/StudentController.php
-
-// namespace App\Http\Controllers;
-
-// use Illuminate\Http\Request;
-// use App\Models\Student;
-// use Illuminate\Support\Facades\Storage;
-
-// class StudentController extends Controller
-// {
-//     public function create()
-//     {
-//         return view('students.create');
-//     }
-
-//     public function store(Request $request)
-//     {
-//         $request->validate([
-//             'first_name' => 'required|string|max:255',
-//             'last_name' => 'required|string|max:255',
-//             'email' => 'nullable|email',
-//             'grade' => 'required|string|max:255',
-//             'section' => 'required|string|max:255',
-//             'photo' => 'nullable|image|max:2048',
-//         ], [
-//             'first_name.required' => 'El campo nombre es obligatorio.',
-//             'last_name.required' => 'El campo apellido es obligatorio.',
-//             'email.email' => 'El campo correo electrónico debe ser una dirección de correo válida.',
-//             'grade.required' => 'El campo año/grado es obligatorio.',
-//             'section.required' => 'El campo sección es obligatorio.',
-//             'photo.image' => 'El archivo debe ser una imagen.',
-//             'photo.max' => 'La imagen no debe superar los 2MB.',
-//         ]);
-
-//         $photoPath = $request->file('photo') ? $request->file('photo')->store('photos', 'public') : null;
-
-//         $student = Student::create([
-//             'first_name' => $request->first_name,
-//             'last_name' => $request->last_name,
-//             'email' => $request->email,
-//             'grade' => $request->grade,
-//             'section' => $request->section,
-//             'photo_path' => $photoPath,
-//         ]);
-
-//         return redirect()->back()->with('success', '¡Estudiante creado exitosamente!');
-//     }
-// }

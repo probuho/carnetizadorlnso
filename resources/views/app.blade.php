@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+{{-- <!DOCTYPE html>
 <html lang="es">
 
 <head>
@@ -15,11 +15,14 @@
     <link href="{{ asset('lib/owlcarousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
     <link href="{{ asset('lib/lightbox/css/lightbox.min.css') }}" rel="stylesheet">
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ mix('css/app.css') }}">
+    <link rel="stylesheet" href="{{ mix('css/style.css') }}">
+    @vite(['resources/css/app.css', 'resources\sass\app.scss',  'resources/js/app.js'])
 </head>
 
 <body>
     @include('partials.navbar')
-    
+
     @yield('content')
 
     @include('partials.footer')
@@ -33,4 +36,4 @@
     <script src="{{ asset('js/main.js') }}"></script>
 </body>
 
-</html>
+</html> --}}

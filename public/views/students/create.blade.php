@@ -85,11 +85,16 @@
                             <div class="text">
                                 <span>por favor solo agrege archivos (.jpg)</span>
                             </div>
-                            <input id="photo" type="file" name="photo" required>
+                            <input id="photo" type="file" name="photo" accept="image/*" required>
                         </label>
                         @if ($errors->has('photo'))
                             <span class="text-danger">{{ $errors->first('photo') }}</span>
                         @endif
+                        <div class="progress mt-3">
+                            <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                        <button type="button" class="btn btn-danger mt-3" id="cancel-upload">Cancelar</button>
+                        <img id="photo-preview" class="mt-3" style="display: none; max-width: 100%;">
                     </div>
                 </div>
             </div>
@@ -107,7 +112,9 @@
             const sectionSelect = document.getElementById('section');
             const photoInput = document.getElementById('photo');
             const photoPreview = document.getElementById('photo-preview');
-            const photoPlaceholder = document.querySelector('.photo-placeholder');
+            const progressBar = document.querySelector('.progress-bar');
+            const cancelButton = document.getElementById('cancel-upload');
+            const form = document.querySelector('form');
 
             function toggleGradeSection() {
                 if (rolSelect.value === 'Estudiante') {
@@ -122,19 +129,55 @@
             rolSelect.addEventListener('change', toggleGradeSection);
             toggleGradeSection();
 
+            let uploadAbortController;
+
             photoInput.addEventListener('change', function(event) {
                 const file = event.target.files[0];
                 if (file) {
+                    if (!file.type.startsWith('image/')) {
+                        alert('Por favor seleccione un archivo de imagen.');
+                        photoInput.value = '';
+                        return;
+                    }
                     const reader = new FileReader();
                     reader.onload = function(e) {
                         photoPreview.src = e.target.result;
                         photoPreview.style.display = 'block';
-                        photoPlaceholder.style.display = 'none';
                     }
                     reader.readAsDataURL(file);
-                } else {
-                    photoPreview.style.display = 'none';
-                    photoPlaceholder.style.display = 'block';
+
+                    uploadAbortController = new AbortController();
+                    const signal = uploadAbortController.signal;
+
+                    const uploadProgress = new XMLHttpRequest();
+                    uploadProgress.upload.addEventListener('progress', function(e) {
+                        if (e.lengthComputable) {
+                            const percentComplete = (e.loaded / e.total) * 100;
+                            progressBar.style.width = percentComplete + '%';
+                            progressBar.setAttribute('aria-valuenow', percentComplete);
+                        }
+                    });
+
+                    uploadProgress.addEventListener('load', function() {
+                        progressBar.classList.add('bg-success');
+                        progressBar.textContent = 'Carga exitosa';
+                    });
+
+                    uploadProgress.addEventListener('error', function() {
+                        progressBar.classList.add('bg-danger');
+                        progressBar.textContent = 'Error en la carga, por favor intente nuevamente.';
+                    });
+
+                    uploadProgress.open('POST', form.action);
+                    const formData = new FormData(form);
+                    formData.append('photo', file);
+                    uploadProgress.send(formData, { signal });
+
+                    cancelButton.addEventListener('click', function() {
+                        uploadAbortController.abort();
+                        progressBar.classList.add('bg-warning');
+                        progressBar.textContent = 'Carga cancelada';
+                    });
                 }
             });
         });
@@ -201,6 +244,27 @@
             max-width: 100%;
             max-height: 150px;
             margin-top: 10px;
+        }
+
+        .progress {
+            height: 20px;
+        }
+
+        .progress-bar {
+            line-height: 20px;
+            color: #fff;
+        }
+
+        .bg-success {
+            background-color: #28a745 !important;
+        }
+
+        .bg-danger {
+            background-color: #dc3545 !important;
+        }
+
+        .bg-warning {
+            background-color: #ffc107 !important;
         }
     </style>
 @endsection
