@@ -1,6 +1,7 @@
 <nav class="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-0 px-lg-5">
     <a href="{{ url('/') }}" class="navbar-brand font-weight-bold text-secondary" style="font-size: 25px;">
-        <span class="text-primary">Liceo SurOeste</span>
+        <img src="{{ asset('img/logo.ico') }}" alt="Logo" style="height: 40px; margin-right: 10px;">
+        <span class="text-primary">Liceo SUR - OESTE</span>
     </a>
     <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
         <span class="navbar-toggler-icon"></span>
