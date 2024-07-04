@@ -216,3 +216,21 @@ me puedes ayudar con algo aqui?
 
 la primera es que si es alumno tiene que seleccionar año y seccion de instruccion correcto?
 si el rol es distinto de estudiante igualmente va a permitirle avanzar con el proceso ya que el sistema lo utilizaran para generar carnets
+
+
+=====================================================================
+
+{{-- <div class="col-lg-3 col-md-6 mb-5">
+            <h3 class="text-primary mb-4">Correo</h3>
+            <form action="">
+                <div class="form-group">
+                    <input type="text" class="form-control border-0 py-4" placeholder="Nombre" required="required" />
+                </div>
+                <div class="form-group">
+                    <input type="email" class="form-control border-0 py-4" placeholder="Tu correo" required="required" />
+                </div>
+                <div>
+                    <button class="btn btn-primary btn-block border-0 py-3" type="submit">Enviar</button>
+                </div>
+            </form>
+        </div> --}}
