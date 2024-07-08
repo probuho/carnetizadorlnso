@@ -2,6 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\GalleryController;
+use App\Http\Controllers\SupportController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -51,6 +54,8 @@ Route::get('/students/preview/{id}', [StudentController::class, 'preview'])->nam
 Route::get('/students/approve/{id}', [StudentController::class, 'approve'])->name('students.approve');
 Route::get('/students/print/{id}', [StudentController::class, 'print'])->name('students.print');
 Route::get('/students/email/{id}', [StudentController::class, 'email'])->name('students.email');
+Route::get('/gallery', [GalleryController::class, 'index']);
+Route::post('/contact', [SupportController::class, 'send'])->name('contact.send');
 
 
 

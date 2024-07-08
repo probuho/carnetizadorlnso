@@ -9,9 +9,9 @@
     <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
         <div class="navbar-nav font-weight-bold mx-auto py-0">
             <a href="{{ url('/') }}" class="nav-item nav-link active">Inicio</a>
-            <a href="{{ url('/about') }}" class="nav-item nav-link">Acerca de</a>
+            <a href="{{ url('/about') }}" class="nav-item nav-link">Nosotros</a>
             <a href="{{ url('/gallery') }}" class="nav-item nav-link">Galería</a>
-            <a href="{{ url('/contact') }}" class="nav-item nav-link">Contáctanos</a>
+            <a href="{{ url('/contact') }}" class="nav-item nav-link">Soporte</a>
             <a href="{{ route('students.create') }}" class="nav-item nav-link">Genera tu carné</a>
         </div>
     </div>

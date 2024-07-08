@@ -19,10 +19,37 @@
             <div class="row">
                 <div class="col-lg-7 mb-5">
                     <div class="contact-form">
-                        <div id="success"></div>
-                        <form name="sentMessage" id="contactForm" novalidate="novalidate">
+                        @if(session('success'))
+                            <div class="alert alert-success">
+                                {{ session('success') }}
+                            </div>
+                        @endif
+                        <form action="{{ route('contact.send') }}" method="POST" enctype="multipart/form-data">
+                            @csrf
                             <div class="control-group">
-                                <span>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Consequatur, error nisi doloremque atque iusto obcaecati illum assumenda fugit, necessitatibus cum dolor dicta natus, optio neque ducimus. Quidem ab ducimus inventore!</span>
+                                <label for="name">Nombre</label>
+                                <input type="text" class="form-control" id="name" name="name" required>
+                            </div>
+                            <div class="control-group">
+                                <label for="cedula">Cédula</label>
+                                <input type="text" class="form-control" id="cedula" name="cedula" required>
+                            </div>
+                            <div class="control-group">
+                                <label for="email">Correo</label>
+                                <input type="email" class="form-control" id="email" name="email" required>
+                            </div>
+                            <div class="control-group">
+                                <label for="report">Reporte</label>
+                                <textarea class="form-control" id="report" name="report" required></textarea>
+                            </div>
+                            <div class="control-group">
+                                <label for="screenshot">Captura de pantalla</label>
+                                <input type="file" class="form-control" id="screenshot" name="screenshot">
+                            </div>
+                            <div class="d-flex justify-content-between mt-3">
+                                <button type="reset" class="btn btn-secondary">Cancelar</button>
+                                <button type="button" id="confirmBtn" class="btn btn-warning">Confirmar</button>
+                                <button type="submit" id="sendBtn" class="btn btn-primary" disabled>Enviar</button>
                             </div>
                         </form>
                     </div>
@@ -31,4 +58,45 @@
         </div>
     </div>
     <!-- Contact End -->
+
+    <!-- Modal -->
+    <div id="confirmationModal" class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirmación</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Tu reporte será atendido en un plazo de 24 a 72 horas hábiles. ¿Deseas continuar?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="button" id="confirmSend" class="btn btn-primary">Confirmar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection
+
+@section('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const confirmBtn = document.getElementById('confirmBtn');
+            const sendBtn = document.getElementById('sendBtn');
+            const confirmationModal = $('#confirmationModal');
+            const confirmSend = document.getElementById('confirmSend');
+
+            confirmBtn.addEventListener('click', function () {
+                confirmationModal.modal('show');
+            });
+
+            confirmSend.addEventListener('click', function () {
+                confirmationModal.modal('hide');
+                sendBtn.disabled = false;
+            });
+        });
+    </script>
 @endsection
