@@ -33,22 +33,14 @@ Route::get('/contact', function () {
     return view('contact');
 });
 
-Route::get('/gallery', function () {
-    return view('gallery');
-});
+Route::get('/gallery', [GalleryController::class, 'index']);
 
 Route::get('/students/create', [StudentController::class, 'create'])->name('students.create');
 Route::post('/students', [StudentController::class, 'store'])->name('students.store');
-Route::get('students/create', [StudentController::class, 'create'])->name('students.create');
-Route::post('students', [StudentController::class, 'store'])->name('students.store');
-Route::get('students/{student}', [StudentController::class, 'show'])->name('students.show');
-Route::post('students/{student}/send-email', [StudentController::class, 'sendEmail'])->name('students.send_email');
-// Ruta para generar PDF
-Route::get('students/{student}/pdf', [StudentController::class, 'generatePdf'])->name('students.generate_pdf');
+Route::get('/students/{student}', [StudentController::class, 'show'])->name('students.show');
+Route::post('/students/{student}/send-email', [StudentController::class, 'sendEmail'])->name('students.send_email');
+Route::get('/students/{student}/pdf', [StudentController::class, 'generatePdf'])->name('students.generate_pdf');
 Route::get('/students/confirm/{id}', [StudentController::class, 'confirm'])->name('students.confirm');
-
-
-//Rutas de vista previa 'Aprovacion, impresion, envio por correo'
 
 Route::get('/students/preview/{id}', [StudentController::class, 'preview'])->name('students.preview');
 Route::get('/students/approve/{id}', [StudentController::class, 'approve'])->name('students.approve');
@@ -57,6 +49,4 @@ Route::get('/students/email/{id}', [StudentController::class, 'email'])->name('s
 Route::get('/gallery', [GalleryController::class, 'index']);
 Route::post('/contact', [SupportController::class, 'send'])->name('contact.send');
 
-
-
-
+Route::post('/contact', [SupportController::class, 'send'])->name('contact.send');
