@@ -48,8 +48,8 @@ Route::get('/students/print/{id}', [StudentController::class, 'print'])->name('s
 Route::get('/students/email/{id}', [StudentController::class, 'email'])->name('students.email');
 
 Route::post('/contact', [SupportController::class, 'send'])->name('contact.send');
-<<<<<<< HEAD
-=======
+
+
 
 Route::post('/contact', [SupportController::class, 'send'])->name('contact.send');
->>>>>>> 60f3bc006404d2fa0e46bb06932e75651a461077
+
