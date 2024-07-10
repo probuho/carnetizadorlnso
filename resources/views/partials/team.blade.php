@@ -1,7 +1,7 @@
 <div class="container-fluid pt-5">
     <div class="container">
         <div class="text-center pb-2">
-            <p class="section-title px-5"><span class="px-2">Nuestros Educadores</span></p>
+            <p class="section-title px-5"><span class="px-2">Nuestros espacios</span></p>
         </div>
         <div class="row">
             <div class="col-md-6 col-lg-3 text-center team mb-5">
